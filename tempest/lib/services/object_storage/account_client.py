@@ -13,12 +13,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from xml.etree import ElementTree as etree
 
 from oslo_serialization import jsonutils as json
 from six.moves.urllib import parse as urllib
 
 from tempest.lib.common import rest_client
+import defusedxml.ElementTree
 
 
 class AccountClient(rest_client.RestClient):
@@ -71,7 +71,7 @@ class AccountClient(rest_client.RestClient):
         if params and params.get('format') == 'json':
             body = json.loads(body)
         elif params and params.get('format') == 'xml':
-            body = etree.fromstring(body)
+            body = defusedxml.ElementTree.fromstring(body)
         else:
             body = body.strip().splitlines()
         self.expected_success([200, 204], resp.status)
