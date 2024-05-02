@@ -18,6 +18,8 @@ import subprocess
 import tempfile
 
 from mock import patch
+from security import safe_command
+
 try:
     from StringIO import StringIO
 except ImportError:
@@ -43,7 +45,7 @@ class TestTempestWorkspaceBase(base.TestCase):
 
 class TestTempestWorkspace(TestTempestWorkspaceBase):
     def _run_cmd_gets_return_code(self, cmd, expected):
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+        process = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
         return_code = process.returncode

@@ -32,6 +32,7 @@ from tempest.lib.common.utils import data_utils
 from tempest.lib.common.utils import test_utils
 from tempest.lib import exceptions as lib_exc
 import tempest.test
+from security import safe_command
 
 CONF = config.CONF
 
@@ -565,7 +566,7 @@ class ScenarioTest(tempest.test.BaseTestCase):
         cmd.append(ip_address)
 
         def ping():
-            proc = subprocess.Popen(cmd,
+            proc = safe_command.run(subprocess.Popen, cmd,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE)
             proc.communicate()

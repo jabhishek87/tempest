@@ -28,6 +28,7 @@ from tempest.cmd import workspace
 from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.tests import base
+from security import safe_command
 
 DEVNULL = open(os.devnull, 'wb')
 atexit.register(DEVNULL.close)
@@ -93,7 +94,7 @@ class TestRunReturnCode(base.TestCase):
         os.chdir(self.directory)
 
     def assertRunExit(self, cmd, expected):
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+        p = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
         out, err = p.communicate()
         msg = ("Running %s got an unexpected returncode\n"
