@@ -13,7 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import random
 
 import six
 
@@ -24,6 +23,7 @@ from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
+import secrets
 
 CONF = config.CONF
 
@@ -43,7 +43,7 @@ class FlavorsV2NegativeTest(base.BaseV2ComputeTest):
         flavor = self.flavors_client.show_flavor(
             CONF.compute.flavor_ref)['flavor']
         min_img_ram = flavor['ram'] + 1
-        size = random.randint(1024, 4096)
+        size = secrets.SystemRandom().randint(1024, 4096)
         image_file = six.BytesIO(data_utils.random_bytes(size))
         params = {
             'name': data_utils.rand_name('image'),

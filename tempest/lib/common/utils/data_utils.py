@@ -14,12 +14,12 @@
 #    under the License.
 
 import itertools
-import random
 import string
 import uuid
 
 from oslo_utils import uuidutils
 import six.moves
+import secrets
 
 
 def rand_uuid():
@@ -50,7 +50,7 @@ def rand_name(name='', prefix='tempest'):
              (e.g. 'prefixfoo-namebar-154876201')
     :rtype: string
     """
-    randbits = str(random.randint(1, 0x7fffffff))
+    randbits = str(secrets.SystemRandom().randint(1, 0x7fffffff))
     rand_name = randbits
     if name:
         rand_name = name + '-' + rand_name
@@ -70,15 +70,15 @@ def rand_password(length=15):
         (e.g. ``G2*ac8&lKFFgh%2``)
     :rtype: string
     """
-    upper = random.choice(string.ascii_uppercase)
+    upper = secrets.choice(string.ascii_uppercase)
     ascii_char = string.ascii_letters
     digits = string.digits
-    digit = random.choice(string.digits)
+    digit = secrets.choice(string.digits)
     puncs = '~!@#%^&*_=+'
-    punc = random.choice(puncs)
+    punc = secrets.choice(puncs)
     seed = ascii_char + digits + puncs
     pre = upper + digit + punc
-    password = pre + ''.join(random.choice(seed) for x in range(length - 3))
+    password = pre + ''.join(secrets.choice(seed) for x in range(length - 3))
     return password
 
 
@@ -89,7 +89,7 @@ def rand_url():
              (e.g. 'https://url-154876201.com')
     :rtype: string
     """
-    randbits = str(random.randint(1, 0x7fffffff))
+    randbits = str(secrets.SystemRandom().randint(1, 0x7fffffff))
     return 'https://url-' + randbits + '.com'
 
 
@@ -101,7 +101,7 @@ def rand_int_id(start=0, end=0x7fffffff):
     :return: a random integer value
     :rtype: int
     """
-    return random.randint(start, end)
+    return secrets.SystemRandom().randint(start, end)
 
 
 def rand_mac_address():
@@ -117,9 +117,9 @@ def rand_mac_address():
     #             properly: 0xfa.
     #             Discussion: https://bugs.launchpad.net/nova/+bug/921838
     mac = [0xfa, 0x16, 0x3e,
-           random.randint(0x00, 0xff),
-           random.randint(0x00, 0xff),
-           random.randint(0x00, 0xff)]
+           secrets.SystemRandom().randint(0x00, 0xff),
+           secrets.SystemRandom().randint(0x00, 0xff),
+           secrets.SystemRandom().randint(0x00, 0xff)]
     return ':'.join(["%02x" % x for x in mac])
 
 
@@ -131,7 +131,7 @@ def rand_infiniband_guid_address():
     """
     guid = []
     for i in range(8):
-        guid.append("%02x" % random.randint(0x00, 0xff))
+        guid.append("%02x" % secrets.SystemRandom().randint(0x00, 0xff))
     return ':'.join(guid)
 
 
@@ -170,7 +170,7 @@ def random_bytes(size=1024):
     :return: size randomly bytes
     :rtype: string
     """
-    return b''.join([six.int2byte(random.randint(0, 255))
+    return b''.join([six.int2byte(secrets.SystemRandom().randint(0, 255))
                     for i in range(size)])
 
 

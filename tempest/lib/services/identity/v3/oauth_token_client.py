@@ -16,7 +16,6 @@
 import binascii
 import hashlib
 import hmac
-import random
 import time
 
 import six
@@ -25,6 +24,7 @@ from six.moves.urllib import parse as urlparse
 from oslo_serialization import jsonutils as json
 
 from tempest.lib.common import rest_client
+import secrets
 
 
 class OAUTHTokenClient(rest_client.RestClient):
@@ -48,7 +48,7 @@ class OAUTHTokenClient(rest_client.RestClient):
                                         http_method='GET'):
         """Generate OAUTH params along with signature."""
         timestamp = six.text_type(int(time.time()))
-        nonce = six.text_type(random.getrandbits(64)) + timestamp
+        nonce = six.text_type(secrets.SystemRandom().getrandbits(64)) + timestamp
         oauth_params = [
             ('oauth_nonce', nonce),
             ('oauth_timestamp', timestamp),

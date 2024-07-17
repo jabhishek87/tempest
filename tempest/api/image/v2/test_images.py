@@ -14,7 +14,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import random
 
 import six
 
@@ -24,6 +23,7 @@ from tempest import config
 from tempest.lib.common.utils import data_utils
 from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
+import secrets
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
@@ -197,7 +197,7 @@ class ListUserImagesTest(base.BaseV2ImageTest):
         Note that the size of the new image is a random number between
         1024 and 4096
         """
-        size = random.randint(1024, 4096)
+        size = secrets.SystemRandom().randint(1024, 4096)
         image_file = six.BytesIO(data_utils.random_bytes(size))
         tags = [data_utils.rand_name('tag'), data_utils.rand_name('tag')]
         image = cls.create_image(container_format=container_format,
